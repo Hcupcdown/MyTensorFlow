@@ -86,5 +86,6 @@ with tf.Session() as sess:
     for i in range(show_num):
         a[0][i].imshow(np.reshape(mnist.test.images[i],(28,28)))
         a[1][i].imshow(np.reshape(reconstruction[i],(28,28)))
-    plt.draw()
+    #用plt.draw()没用
+    plt.show()
     
