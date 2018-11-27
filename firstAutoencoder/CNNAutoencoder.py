@@ -24,8 +24,8 @@ y=x
 weights={
     'encoder_conv1':tf.Variable(tf.truncated_normal([5,5,1,1],stddev=0.1)),
     'encoder_conv2':tf.Variable(tf.truncated_normal([3,3,1,1],stddev=0.1)),
-    'decoder_conv1':tf.Variable(tf.truncated_normal([5,5,1,1],stddev=0.1)),
-    'decoder_conv2':tf.Variable(tf.truncated_normal([3,3,1,1],stddev=0.1))
+    'decoder_conv1':tf.Variable(tf.truncated_normal([3,3,1,1],stddev=0.1)),
+    'decoder_conv2':tf.Variable(tf.truncated_normal([5,5,1,1],stddev=0.1))
 }
 
 biases={
@@ -39,8 +39,11 @@ x_image=tf.reshape(x,[-1,28,28,1])
 
 #编码
 def encoder(x):
-    h_conv1=tf.nn.relu(tf.nn.conv2d(x,weights['encoder_conv1'])+biases['encoder_conv1'])
-    h_conv2=tf.nn.relu(tf.nn.conv2d(h_conv1,weights['encoder_conv2'])+biases['encoder_conv2'])
+    print(x.shape)
+    print(weights['encoder_conv1'].shape)
+    h_conv1=tf.nn.relu(tf.nn.conv2d(x,weights['encoder_conv1'],strides=[2,2,1,1],padding="VALID")+biases['encoder_conv1'])
+    h_conv1=tf.reshape(h_conv1,[-1,12,12,1])
+    h_conv2=tf.nn.relu(tf.nn.conv2d(h_conv1,weights['encoder_conv2'],strides=[2,2,1,1],padding="VALID")+biases['encoder_conv2'])
     return h_conv2,h_conv1
 
 #解码
@@ -50,7 +53,10 @@ def decoder(x,conv1):
     return t_x_image
 
 encoder_out,conv1=encoder(x_image)
-h_pool2,mask=max_pool_with_argmax(encoder_out,2)
+
+print(encoder_out.shape)
+#进行最大池化
+h_pool2,mask=tf.nn.max_pool_with_argmax(encoder_out,strides=[1,1,1,1],padding="VALID")
 
 #反池化
 h_upool=unpool(h_pool2,mask,2)
