@@ -61,6 +61,7 @@ display_step=5
 
 #启动会话
 with tf.Session() as sess:
+
     #初始化变量
     sess.run(tf.global_variables_initializer())
     total_batch=int(mnist.train.num_examples/batch_size)
@@ -86,6 +87,7 @@ with tf.Session() as sess:
     for i in range(show_num):
         a[0][i].imshow(np.reshape(mnist.test.images[i],(28,28)))
         a[1][i].imshow(np.reshape(reconstruction[i],(28,28)))
+        
     #用plt.draw()没用
     plt.show()
     
