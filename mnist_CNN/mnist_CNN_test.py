@@ -4,17 +4,17 @@
 import time
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
-import mnist_backward
-import mnist_forward
+import mnist_CNN_backward
+import mnist_CNN_forward
 TEST_INTERVAL_SECS = 5
 
 def test(mnist):
     with tf.Graph().as_default() as g:
-        x = tf.placeholder(tf.float32, [None, mnist_forward.INPUT_NODE])
-        y_ = tf.placeholder(tf.float32, [None, mnist_forward.OUTPUT_NODE])
-        y = mnist_forward.forward(x,None)
+        x = tf.placeholder(tf.float32, [None, mnist_CNN_forward.INPUT_NODE])
+        y_ = tf.placeholder(tf.float32, [None, mnist_CNN_forward.OUTPUT_NODE])
+        y = mnist_CNN_forward.forward(x,None)
 
-        ema = tf.train.ExponentialMovingAverage(mnist_backward.MOVING_AVERAGE_DECAY)
+        ema = tf.train.ExponentialMovingAverage(mnist_CNN_backward.MOVING_AVERAGE_DECAY)
         ema_restore = ema.variables_to_restore()
         saver = tf.train.Saver(ema_restore)
 
@@ -23,7 +23,7 @@ def test(mnist):
 
         while True:
             with tf.Session() as sess:
-                ckpt = tf.train.get_checkpoint_state(mnist_backward.MODE_SAVE_PATH)
+                ckpt = tf.train.get_checkpoint_state(mnist_CNN_backward.MODE_SAVE_PATH)
                 if ckpt and ckpt.model_checkpoint_path:
                     saver.restore(sess, ckpt.model_checkpoint_path)
                     global_step = ckpt.model_checkpoint_path.split('/')[-1].split('-')[-1]
