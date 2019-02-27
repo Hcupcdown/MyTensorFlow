@@ -1,4 +1,5 @@
-#creatd by cup&cdown
+#coding: UTF-8
+#create by cup&cdown
 #2019-2-26
 #Lenet5反向传播训练
 import tensorflow as tf

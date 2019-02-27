@@ -1,3 +1,4 @@
+#coding: UTF-8
 #creatd by cup&cdown
 #2019-2-26
 #Lenet5定义前向传播节点
