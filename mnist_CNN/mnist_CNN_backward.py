@@ -1,5 +1,9 @@
 #coding: UTF-8
+<<<<<<< HEAD
 #create by cup&cdown
+=======
+#creatd by cup&cdown
+>>>>>>> 9ca758cd6f420d4e7dae83b29f46fc8707fd91ff
 #2019-2-26
 #Lenet5反向传播训练
 import tensorflow as tf
@@ -58,12 +62,16 @@ def backward(mnist):
         sess.run(init_op)
 
         #实现断点续训
+        have_done = 0
         ckpt = tf.train.get_checkpoint_state(MODE_SAVE_PATH)
         if ckpt and ckpt.model_checkpoint_path:
             saver.restore(sess, ckpt.model_checkpoint_path)
+            #从名字中分割出上次训练到的次数
+            have_done = int(ckpt.model_checkpoint_path.split('/')[-1].split('-')[-1])
 
-        for i in range(STEPS):
+        for i in range(have_done,STEPS):
             xs, ys =mnist.train.next_batch(BATCH_SIZE)
+            #将输入的mnist数据集整形为需要的形状
             reshape_xs = np.reshape(xs,(
                 BATCH_SIZE,
                 mnist_CNN_forward.INPUT_SIZE,
