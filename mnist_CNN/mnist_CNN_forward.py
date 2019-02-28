@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+#coding: UTF-8
+=======
 ##coding: UTF-8
+>>>>>>> 9ca758cd6f420d4e7dae83b29f46fc8707fd91ff
 #creatd by cup&cdown
 #2019-2-26
 #Lenet5定义前向传播节点
