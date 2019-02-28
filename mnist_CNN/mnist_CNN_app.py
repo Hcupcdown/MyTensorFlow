@@ -5,23 +5,23 @@
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-import mnist_forward
-import mnist_backward
+import mnist_CNN_forward
+import mnist_CNN_backward
 import matplotlib.pylab as plt
 
 def restore_model(testPicArr):
     #生成计算图，并将计算图设为默认
     with tf.Graph().as_default() as tg:
-        x = tf.placeholder(tf.float32, [None, mnist_forward.INPUT_NODE])
-        y = mnist_forward.forward(x, None)
+        x = tf.placeholder(tf.float32, [1, mnist_CNN_forward.INPUT_SIZE,mnist_CNN_forward.INPUT_SIZE,mnist_CNN_forward.NUM_CHANNELS])
+        y = mnist_CNN_forward.forward(x,False, None)
         preValue = tf.argmax(y, 1)
 
-        variable_averages = tf.train.ExponentialMovingAverage(mnist_backward.MOVING_AVERAGE_DECAY)
+        variable_averages = tf.train.ExponentialMovingAverage(mnist_CNN_backward.MOVING_AVERAGE_DECAY)
         variable_to_restore = variable_averages.variables_to_restore()
         saver = tf.train.Saver(variable_to_restore)
-
+        testPicArr = np.reshape(testPicArr,(1,28,28,1))
         with tf.Session() as sess:
-            ckpt = tf.train.get_checkpoint_state(mnist_backward.MODE_SAVE_PATH)
+            ckpt = tf.train.get_checkpoint_state(mnist_CNN_backward.MODE_SAVE_PATH)
             if ckpt and ckpt.model_checkpoint_path:
                 saver.restore(sess, ckpt.model_checkpoint_path)
                 
@@ -46,8 +46,8 @@ def pre_pic(picName):
                 im_arr[i][j] = 0
             else:
                 im_arr[i][j] = 255
-    plt.imshow(im_arr)
-    plt.show()
+    #plt.imshow(im_arr)
+    #plt.show()
     nm_arr = im_arr.reshape([1,784])
     nm_arr = nm_arr.astype(np.float32)
     img_ready = np.multiply(nm_arr, 1.0/255.0)
