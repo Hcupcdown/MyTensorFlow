@@ -1,6 +1,6 @@
 #created by cup&cdown
-#2019-2-26
-#mnist训练集训练数据应用
+#2018-12-26
+#大创项目代码
 
 import tensorflow as tf
 import numpy as np
@@ -15,7 +15,7 @@ def restore_model(testPicArr):
         x = tf.placeholder(tf.float32, [1, mnist_CNN_forward.INPUT_SIZE,mnist_CNN_forward.INPUT_SIZE,mnist_CNN_forward.NUM_CHANNELS])
         y = mnist_CNN_forward.forward(x,False, None)
         preValue = tf.argmax(y, 1)
-
+        
         variable_averages = tf.train.ExponentialMovingAverage(mnist_CNN_backward.MOVING_AVERAGE_DECAY)
         variable_to_restore = variable_averages.variables_to_restore()
         saver = tf.train.Saver(variable_to_restore)
